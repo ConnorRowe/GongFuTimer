@@ -60,7 +60,7 @@ MainPage::MainPage()
 	});
 
 	//Get Dispatcher for main loop
-	CoreWindow^ appwindow = CoreWindow::GetForCurrentThread();
+	Windows::UI::Core::CoreWindow^ appwindow = CoreWindow::GetForCurrentThread();
 	appdispatcher = appwindow->Dispatcher;
 
 	//---------------------  Main Loop  ----------------------------------------------------------------------------------------------------------
@@ -111,16 +111,18 @@ Platform::String ^ GongFuTimer::MainPage::FormatFloat(float f)
 
 void GongFuTimer::MainPage::Start_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	//target Seconds = base time + (additional infusion time * infusion number)
-	targetSeconds = StrToF(baseSecsComboBox->SelectedValue->ToString()) + (StrToF(infSecsComboBox->SelectedValue->ToString()) * (float)infNumber);
-
 	//debugText = targetSeconds.ToString();
-
-	teaTimer.start();
+	Start();
 }
 
 void GongFuTimer::MainPage::Update()
 {
+	//Check for enter KeyUp
+	if((Window::Current->CoreWindow->GetKeyState(Windows::System::VirtualKey::Enter) & Windows::UI::Core::CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down)
+	{
+		Start();
+	}
+
 	//Check if timer is complete
 	if (teaTimer.isRunning && teaTimer.elapsedSeconds() > targetSeconds)
 	{
@@ -132,7 +134,6 @@ void GongFuTimer::MainPage::Update()
 		//Change startbutton content
 		startButton->Content = "Next Infusion";
 	}
-
 
 	//Splitting the second value from the timer into minutes, seconds, and milliseconds for the timer display
 	float seconds = 0.0f;
@@ -159,6 +160,15 @@ void GongFuTimer::MainPage::Update()
 	debugTextBlock->Text = debugText;
 }
 
+void GongFuTimer::MainPage::Start()
+{
+	//target Seconds = base time + (additional infusion time * infusion number)
+	targetSeconds = StrToF(baseSecsComboBox->SelectedValue->ToString()) + (StrToF(infSecsComboBox->SelectedValue->ToString()) * (float)infNumber);
+
+	//Start Timer
+	teaTimer.start();
+}
+
 void GongFuTimer::MainPage::Reset_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	teaTimer.reset();
@@ -167,5 +177,4 @@ void GongFuTimer::MainPage::Reset_Click(Platform::Object^ sender, Windows::UI::X
 	infNumText->Text = "0";
 	//also reset startbutton text
 	startButton->Content = "Start";
-
 }

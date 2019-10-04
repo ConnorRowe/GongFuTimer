@@ -22,11 +22,13 @@ namespace GongFuTimer
 		Platform::String^ FormatFloat(float f);
 		void Start_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Update();
+		void Start();
 		Timer teaTimer;
 		long ticks;
 		int infNumber = 0;
 		float targetSeconds = 0.0f;
 		Platform::String^ debugText;
+
 		Windows::UI::Core::CoreDispatcher^ appdispatcher;
 
 		void Reset_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
