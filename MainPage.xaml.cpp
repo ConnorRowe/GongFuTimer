@@ -65,6 +65,9 @@ MainPage::MainPage()
 	Windows::UI::Core::CoreWindow^ appwindow = CoreWindow::GetForCurrentThread();
 	appdispatcher = appwindow->Dispatcher;
 
+	//Add window activated event handler to keep track of the window's focus status
+	appwindow->Activated += ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow ^, Windows::UI::Core::WindowActivatedEventArgs ^>(this, &GongFuTimer::MainPage::OnActivated);
+
 	//---------------------  Main Loop  ----------------------------------------------------------------------------------------------------------
 	appdispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new Windows::UI::Core::DispatchedHandler([this]()
 	{
@@ -128,10 +131,14 @@ void GongFuTimer::MainPage::Start_Click(Platform::Object^ sender, Windows::UI::X
 //Fires every single frame
 void GongFuTimer::MainPage::Update()
 {
-	//Check for enter KeyUp
-	if((Window::Current->CoreWindow->GetKeyState(Windows::System::VirtualKey::Enter) & Windows::UI::Core::CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down)
+	//Only check for input if the window is focused
+	if (isFocused)
 	{
-		Start();
+		//Check for enter KeyUp
+		if ((Window::Current->CoreWindow->GetKeyState(Windows::System::VirtualKey::Enter) & Windows::UI::Core::CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down)
+		{
+			Start();
+		}
 	}
 
 	//Check if timer is complete
@@ -156,25 +163,30 @@ void GongFuTimer::MainPage::Update()
 	float seconds = 0.0f;
 	float minutes = 0.0f;
 	float milliseconds = 0.0f;
-	if (teaTimer.isRunning)
+
+	//Only update text UI stuff if window is focused
+	if (isFocused)
 	{
-		seconds = targetSeconds - teaTimer.elapsedSeconds();
-		if (seconds >= 60.0f)
+		if (teaTimer.isRunning)
 		{
-			minutes = seconds / 60.0f;
-			minutes = std::floorf(minutes);
-			seconds -= minutes * 60.0f;
+			seconds = targetSeconds - teaTimer.elapsedSeconds();
+			if (seconds >= 60.0f)
+			{
+				minutes = seconds / 60.0f;
+				minutes = std::floorf(minutes);
+				seconds -= minutes * 60.0f;
+			}
+			milliseconds = (seconds - std::floorf(seconds))*100.0f;
+			seconds = std::floorf(seconds);
+			milliseconds = std::floorf(milliseconds);
+
+			minuteText->Text = FormatFloat(minutes);
+			secondText->Text = FormatFloat(seconds);
+			millisecondText->Text = FormatFloat(milliseconds);
 		}
-		milliseconds = (seconds - std::floorf(seconds))*100.0f;
-		seconds = std::floorf(seconds);
-		milliseconds = std::floorf(milliseconds);
 
-		minuteText->Text = FormatFloat(minutes);
-		secondText->Text = FormatFloat(seconds);
-		millisecondText->Text = FormatFloat(milliseconds);
+		debugTextBlock->Text = debugText;
 	}
-
-	debugTextBlock->Text = debugText;
 }
 
 void GongFuTimer::MainPage::Start()
@@ -194,4 +206,17 @@ void GongFuTimer::MainPage::Reset_Click(Platform::Object^ sender, Windows::UI::X
 	infNumText->Text = "0";
 	//also reset startbutton text
 	startButton->Content = "Start";
+}
+
+//Keep track of window the window focus status
+void GongFuTimer::MainPage::OnActivated(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::WindowActivatedEventArgs ^args)
+{
+	if (args->WindowActivationState == Windows::UI::Core::CoreWindowActivationState::Deactivated)
+	{
+		isFocused = false;
+	}
+	else
+	{
+		isFocused = true;
+	}
 }

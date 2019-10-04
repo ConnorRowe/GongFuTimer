@@ -18,23 +18,37 @@ namespace GongFuTimer
 	public:
 		MainPage();
 	private:
-		float StrToF(Platform::String^ str);
-		Platform::String^ FormatFloat(float f);
-		void Start_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void Update();
-		void Start();
+
+		bool isFocused = false;
+		Windows::UI::Core::CoreDispatcher^ appdispatcher;
+
+		//Timing vars
 		Timer teaTimer;
 		long ticks;
 		int infNumber = 0;
 		float targetSeconds = 0.0f;
-		Platform::String^ debugText;
 		std::chrono::time_point<std::chrono::system_clock>	LastFrameTime;
 		double delta;
-		Windows::UI::Core::CoreDispatcher^ appdispatcher;
 
-		void Reset_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-
+		//Alarm sound
 		Windows::UI::Xaml::Controls::MediaElement^ alarmSound;
+
+		//Debug
+		Platform::String^ debugText;
+
+		//Helper functions
+		float StrToF(Platform::String^ str);
+		Platform::String^ FormatFloat(float f);
+
+		//Main functions
+		void Update();
+		void Start();
+
+		//Events
+		void Reset_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void Start_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnActivated(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::WindowActivatedEventArgs ^args);
+
 
 	};
 }
