@@ -26,7 +26,7 @@ MainPage::MainPage()
 {
 	InitializeComponent();
 
-	LastFrameTime = std::chrono::system_clock::now();
+	LastFrameTime = myClock.now();
 
 	//Fill the combo boxes with all possible second values
 	for (int i = 0; i <= 60; ++i)
@@ -76,22 +76,23 @@ MainPage::MainPage()
 			//Increment ticks
 			++ticks;
 
-			//calculate frame delta to prevent more than 30 frames from occuring every second
-			delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - LastFrameTime).count();
+			//calculate frame delta to prevent more than 60 frames from occuring every second
+			using ms = std::chrono::duration<float, std::milli>;
+			float deltaTime = std::chrono::duration_cast<ms>(myClock.now() - LastFrameTime).count();
 
-			if (delta >= 1000.0 / 30.0)
+			if (deltaTime >= 1000.0f / 60.0f)
 			{
 				//Run update function
 				GongFuTimer::MainPage::Update();
 
 				//reset last frame time
-				LastFrameTime = std::chrono::system_clock::now();
-			}
+				LastFrameTime = myClock.now();
 
-			//Process any UI events if needed
-			if (appdispatcher->ShouldYield())
-			{
-				appdispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessAllIfPresent);
+				//Process any UI events if needed
+				if (appdispatcher->ShouldYield())
+				{
+					appdispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessAllIfPresent);
+				}
 			}
 		}
 	}));

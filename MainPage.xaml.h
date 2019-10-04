@@ -24,10 +24,11 @@ namespace GongFuTimer
 
 		//Timing vars
 		Timer teaTimer;
+		std::chrono::high_resolution_clock myClock;
 		long ticks;
 		int infNumber = 0;
 		float targetSeconds = 0.0f;
-		std::chrono::time_point<std::chrono::system_clock>	LastFrameTime;
+		std::chrono::time_point<std::chrono::high_resolution_clock>	LastFrameTime;
 		double delta;
 
 		//Alarm sound
