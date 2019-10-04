@@ -26,6 +26,8 @@ MainPage::MainPage()
 {
 	InitializeComponent();
 
+	LastFrameTime = std::chrono::system_clock::now();
+
 	//Fill the combo boxes with all possible second values
 	for (int i = 0; i <= 60; ++i)
 	{
@@ -66,14 +68,22 @@ MainPage::MainPage()
 	//---------------------  Main Loop  ----------------------------------------------------------------------------------------------------------
 	appdispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new Windows::UI::Core::DispatchedHandler([this]()
 	{
-
 		while (true)
 		{
 			//Increment ticks
 			++ticks;
 
-			//Run update function
-			GongFuTimer::MainPage::Update();
+			//calculate frame delta to prevent more than 30 frames from occuring every second
+			delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - LastFrameTime).count();
+
+			if (delta >= 1000.0 / 30.0)
+			{
+				//Run update function
+				GongFuTimer::MainPage::Update();
+
+				//reset last frame time
+				LastFrameTime = std::chrono::system_clock::now();
+			}
 
 			//Process any UI events if needed
 			if (appdispatcher->ShouldYield())
@@ -115,6 +125,7 @@ void GongFuTimer::MainPage::Start_Click(Platform::Object^ sender, Windows::UI::X
 	Start();
 }
 
+//Fires every single frame
 void GongFuTimer::MainPage::Update()
 {
 	//Check for enter KeyUp
@@ -126,6 +137,8 @@ void GongFuTimer::MainPage::Update()
 	//Check if timer is complete
 	if (teaTimer.isRunning && teaTimer.elapsedSeconds() > targetSeconds)
 	{
+		//---- Timer has fired!
+
 		teaTimer.reset();
 		alarmSound->Play();
 		//Increment number of infusions
@@ -133,6 +146,10 @@ void GongFuTimer::MainPage::Update()
 		infNumText->Text = infNumber.ToString();
 		//Change startbutton content
 		startButton->Content = "Next Infusion";
+		//Clear timer text
+		minuteText->Text = "00";
+		secondText->Text = "00";
+		millisecondText->Text = "00";
 	}
 
 	//Splitting the second value from the timer into minutes, seconds, and milliseconds for the timer display

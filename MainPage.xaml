@@ -53,10 +53,10 @@
             <TextBlock HorizontalAlignment="Left" Text="GongFu Timer" FontSize="36" />
 
             <StackPanel x:Name="timeInputPanel" Orientation="Horizontal">
-                <StackPanel x:Name="baseTimePanel" Padding="0" Margin="0,0,30,0">
+                <StackPanel x:Name="baseTimePanel" Padding="0" Margin="0,0,40,0">
                     <ComboBox Header="Base Infusion Seconds" x:Name="baseSecsComboBox" TextBoxStyle="{ThemeResource CaptionTextBlockStyle}"/>
                 </StackPanel>
-                <StackPanel x:Name="modifierPanel" Margin="0,0,30,0">
+                <StackPanel x:Name="modifierPanel" Margin="0,0,40,0">
                     <ComboBox Header="+ Infusion Seconds" x:Name="infSecsComboBox" TextBoxStyle="{ThemeResource CaptionTextBlockStyle}"/>
                 </StackPanel>
                 <StackPanel x:Name="currentInfusionPanel">
@@ -70,7 +70,7 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel x:Name="inputPanel" Orientation="Horizontal" Margin="0,20,0,20">
-                <StackPanel x:Name="timerPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" BorderBrush="#66FFFFFF" BorderThickness="4,4,4,4" Height="90" Width="230" Background="#7F000000">
+                <StackPanel x:Name="timerPanel" Orientation="Horizontal" HorizontalAlignment="Center" BorderBrush="#66FFFFFF" BorderThickness="4,4,4,4" Height="90" Width="230" Background="#7F000000">
                     <TextBlock x:Name="minuteText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10,0,10,0" VerticalAlignment="Center"/>
                     <TextBlock Text=":" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,10,0" VerticalAlignment="Center"/>
                     <TextBlock x:Name="secondText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,10,0" VerticalAlignment="Center"/>

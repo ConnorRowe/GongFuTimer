@@ -28,7 +28,8 @@ namespace GongFuTimer
 		int infNumber = 0;
 		float targetSeconds = 0.0f;
 		Platform::String^ debugText;
-
+		std::chrono::time_point<std::chrono::system_clock>	LastFrameTime;
+		double delta;
 		Windows::UI::Core::CoreDispatcher^ appdispatcher;
 
 		void Reset_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
