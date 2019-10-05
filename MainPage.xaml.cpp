@@ -28,16 +28,6 @@ MainPage::MainPage()
 
 	LastFrameTime = myClock.now();
 
-	//Fill the combo boxes with all possible second values
-	for (int i = 0; i <= 60; ++i)
-	{
-		infSecsComboBox->Items->Append(i);
-		baseSecsComboBox->Items->Append(i);
-	}
-
-	infSecsComboBox->SelectedIndex = 0;
-	baseSecsComboBox->SelectedIndex = 0;
-
 	//Init timer so it displays at 0 seconds at the start
 	teaTimer.reset();
 
@@ -193,7 +183,7 @@ void GongFuTimer::MainPage::Update()
 void GongFuTimer::MainPage::Start()
 {
 	//target Seconds = base time + (additional infusion time * infusion number)
-	targetSeconds = StrToF(baseSecsComboBox->SelectedValue->ToString()) + (StrToF(infSecsComboBox->SelectedValue->ToString()) * (float)infNumber);
+	targetSeconds = StrToF(baseSecsTextBox->Text->ToString()) + (StrToF(infSecsTextBox->Text->ToString()) * (float)infNumber);
 
 	//Start Timer
 	teaTimer.start();

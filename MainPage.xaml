@@ -54,10 +54,10 @@
 
             <StackPanel x:Name="timeInputPanel" Orientation="Horizontal">
                 <StackPanel x:Name="baseTimePanel" Padding="0" Margin="0,0,40,0">
-                    <ComboBox Header="Base Infusion Seconds" x:Name="baseSecsComboBox" TextBoxStyle="{ThemeResource CaptionTextBlockStyle}"/>
+                    <TextBox x:Name="baseSecsTextBox" Text="0" TextAlignment="Center" InputScope="Number" Header="Base Infusion Seconds"/>
                 </StackPanel>
                 <StackPanel x:Name="modifierPanel" Margin="0,0,40,0">
-                    <ComboBox Header="+ Infusion Seconds" x:Name="infSecsComboBox" TextBoxStyle="{ThemeResource CaptionTextBlockStyle}"/>
+                    <TextBox x:Name="infSecsTextBox" Text="0" TextAlignment="Center" InputScope="Number" Header="+ Infusion Seconds" />
                 </StackPanel>
                 <StackPanel x:Name="currentInfusionPanel">
                     <TextBlock Text="Current Infusion"/>
@@ -70,12 +70,12 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel x:Name="inputPanel" Orientation="Horizontal" Margin="0,20,0,20">
-                <StackPanel x:Name="timerPanel" Orientation="Horizontal" HorizontalAlignment="Center" BorderBrush="#66FFFFFF" BorderThickness="4,4,4,4" Height="90" Width="230" Background="#7F000000">
-                    <TextBlock x:Name="minuteText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10,0,10,0" VerticalAlignment="Center"/>
+                <StackPanel x:Name="timerPanel" Orientation="Horizontal" HorizontalAlignment="Center" BorderBrush="#66FFFFFF" BorderThickness="4,4,4,4" Height="90" Width="238" Background="#7F000000">
+                    <TextBlock x:Name="minuteText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10,0,10,0" VerticalAlignment="Center" Width="52"/>
                     <TextBlock Text=":" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="secondText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="secondText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,10,0" VerticalAlignment="Center" Width="52"/>
                     <TextBlock Text=":" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="millisecondText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="millisecondText" Text="00" Style="{ThemeResource HeaderTextBlockStyle}" VerticalAlignment="Center" Width="52"/>
                 </StackPanel>
                 <StackPanel x:Name="buttonPanel" Orientation="Horizontal">
                     <!--  Buttons  -->
